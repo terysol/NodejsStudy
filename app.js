@@ -1,7 +1,16 @@
 var express=require('express');   // 모듈은 함수이다.
+const { now } = require('underscore');
 var app=express(); 
 
+app.locals.pretty=true;
+app.set('views','./views');
+app.set('view engine','pug');     // 템플릿 엔진을 사용하기 위해 pug를 사용함
+
 app.use(express.static('public'));    // 정적인 파일을 사용자에게 서비스 할 수 있다.
+
+app.get('/template',function(req,res){    // template라는 경로를 들어온 사용자에게 temp의 템플릿 파일을 보여준다.
+    res.render('temp',{time:Date(), title:'Pug'});           // 템플릿 엔진에 값 주입하기
+})
 
 app.get('/',function(req,res){   // 사용자가 home으로 접속하면 함수가 실행되라.
     res.send("Hello World~~");   // 응답
@@ -36,6 +45,7 @@ app.get('/dynamic',function(req,res){   // 변경사항이 있어도 새로고�
 app.get('/login',function(req,res){  // login경로 들어왔을 때 실행해라
     res.send("<h1>Login please</h1>");
 })
+
 app.listen(3001,function(){
     console.log('Connected 3001 port!');
 });
