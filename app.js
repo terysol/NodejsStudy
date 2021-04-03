@@ -7,19 +7,23 @@ app.set('views','./views');
 app.set('view engine','pug');     // 템플릿 엔진을 사용하기 위해 pug를 사용함
 app.use(express.static('public'));    // 정적인 파일을 사용자에게 서비스 할 수 있다.
 
-app.get('/topic',function(req,res){
+app.get('/topic/:id',function(req,res){
     var topics=[
         'Javacript is .....',
         'Nodejs is ...',
         'Express is ...'
     ];
     var output=`
-        <a href="/topic?id=0">Javascript</a><br>
-        <a href="/topic?id=1">Nodejs</a><br>
-        <a href="/topic?id=2">Express</a><br>
-        ${topics[req.query.id]}
+        <a href="/topic/0">Javascript</a><br>
+        <a href="/topic/1">Nodejs</a><br>
+        <a href="/topic/2">Express</a><br>
+        ${topics[req.params.id]}
         `
         res.send(output);             // 쿼리스트링값으로 준 값이 출력
+})
+
+app.get('/topic/:id/:mode',function(req,res){
+    res.send(req.params.id+',' + req.params.mode);
 })
 app.get('/param/:module_id/:topic_id',function(req,res){
     res.json(req.params);
@@ -73,3 +77,5 @@ app.listen(3001,function(){
 
 // express가 사용자가 get를 하게 되면 두번째 인자값 인명함수를 호출한다.
 // 쿼리스트링
+
+// 21.04.03 - 시멘틱 URL
