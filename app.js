@@ -1,11 +1,29 @@
 var express=require('express');   // 모듈은 함수이다.
 const { now } = require('underscore');
 var app=express(); 
+var bodyParser=require('body-parser');
 
 app.locals.pretty=true;
 app.set('views','./views');
 app.set('view engine','pug');     // 템플릿 엔진을 사용하기 위해 pug를 사용함
 app.use(express.static('public'));    // 정적인 파일을 사용자에게 서비스 할 수 있다.
+app.use(bodyParser.urlencoded({extended : false}))  // 먼저 bodyParser post방식으로 전송한 데이터를 우리가 사용할 수 있게 함.
+
+app.get('/form',function(req,res){
+    res.render('form');
+})
+
+app.post('/form_receiver',function(req,res){
+    var title=req.body.title;
+    var description=req.body.description;
+    res.send(title + "," + description);
+})
+
+app.get('/form_receiver',function(req,res){
+    var title=req.query.title;
+    var description=req.query.description;
+    res.send(title+',' + description);
+})
 
 app.get('/topic/:id',function(req,res){
     var topics=[
@@ -25,6 +43,7 @@ app.get('/topic/:id',function(req,res){
 app.get('/topic/:id/:mode',function(req,res){
     res.send(req.params.id+',' + req.params.mode);
 })
+
 app.get('/param/:module_id/:topic_id',function(req,res){
     res.json(req.params);
 })
@@ -79,3 +98,6 @@ app.listen(3001,function(){
 // 쿼리스트링
 
 // 21.04.03 - 시멘틱 URL
+
+// 21.04.04 - Get vs Post - 사용자의 정보를 서버로 전달할 때 :Post -> url를 통해서 데이터를
+// 전송하지 않음. body-parser를 사용하여 post방식으로 보낸 데이터를 보여준다.
