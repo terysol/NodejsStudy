@@ -27,7 +27,16 @@ app.post('/topic',function(req,res){
     });
 })
 
+app.get('/topic',(req,res)=>{
+    fs.readdir('data',(err,files)=>{
+        if(err){
+            res.status(500).send('Internal Server Error');
+        }
+        res.render('view',{topics:files});   // view파일에 files를 객체로 만들어서 전달한다.
+    })
+});
+
 app.listen(3002, function(){
     console.log('Connected, 3002 port');
-})   // --> 특정포트를 리스닝 하게 만됨.
+})   // --> 특정포트를 리스닝 하게 만듦.
 

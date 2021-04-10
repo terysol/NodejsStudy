@@ -1,0 +1,11 @@
+<!-- 글 목록 보여주는 main-->
+doctype html
+html 
+    head 
+        metc(charset='utf-8')
+    body
+        h1 Server Side JavaScript 
+        ul 
+            each topic in topics    
+                li
+                    a(href='/topic/' + topic)=topic
