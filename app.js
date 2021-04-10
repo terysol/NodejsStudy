@@ -35,7 +35,7 @@ app.get('/topic/:id',function(req,res){
         <a href="/topic/0">Javascript</a><br>
         <a href="/topic/1">Nodejs</a><br>
         <a href="/topic/2">Express</a><br>
-        ${topics[req.params.id]}
+        ${topics[req.query.id]}
         `
         res.send(output);             // 쿼리스트링값으로 준 값이 출력
 })
