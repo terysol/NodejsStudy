@@ -16,6 +16,46 @@ app.get('/topic/new',function(req,res){
     res.render('new');
 })
 
+app.get(['/topic','/topic/:id'],(req,res)=>{
+    fs.readdir('data',(err,files)=>{
+        if(err){
+            res.status(500).send('Internal Server Error');
+        }
+        var id=req.params.id;
+        if(id){
+            // id값을 있을 때
+            fs.readFile('data/'+id,'utf8', (err,data)=>{
+                if(err){
+                    res.status(500).send('Internal Server Error');
+                }
+                res.render('view',{topics:files,title:id,description : data});
+            })
+        }else{
+            // id값을 없을 때
+            res.render('view',{topics:files,title:'Welcom', description:'Hello, JavaScript side Server'});   // view파일에 files를 객체로 만들어서 전달한다.    
+        }
+       
+    })
+});
+
+// app.get('/topic/:id',(req,res)=>{
+//     var id=req.params.id;
+
+//     fs.readdir('data',(err,files)=>{
+//         if(err){
+//             res.status(500).send('Internal Server Error');
+//         }
+//         //res.render('view',{topics:files});   // view파일에 files를 객체로 만들어서 전달한다.
+//         fs.readFile('data/'+id,'utf8', (err,data)=>{
+//             if(err){
+//                 res.status(500).send('Internal Server Error');
+//             }
+//             res.render('view',{topics:files,title:id,description : data});
+//         })
+//     })
+  
+// })
+
 app.post('/topic',function(req,res){
     var title=req.body.title;
     var description=req.body.description;
@@ -26,15 +66,6 @@ app.post('/topic',function(req,res){
         res.send('Success !!');
     });
 })
-
-app.get('/topic',(req,res)=>{
-    fs.readdir('data',(err,files)=>{
-        if(err){
-            res.status(500).send('Internal Server Error');
-        }
-        res.render('view',{topics:files});   // view파일에 files를 객체로 만들어서 전달한다.
-    })
-});
 
 app.listen(3002, function(){
     console.log('Connected, 3002 port');
