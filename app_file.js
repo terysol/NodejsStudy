@@ -13,7 +13,13 @@ app.set('views','./views_file');
 app.set('view engine','pug');
 
 app.get('/topic/new',function(req,res){
-    res.render('new');
+    fs.readdir('data',(err,files)=>{
+        if(err){
+            res.status(500).send('Internal Server Error');
+        }
+        res.render('new',{topics:files});
+    });
+    
 })
 
 app.get(['/topic','/topic/:id'],(req,res)=>{
@@ -63,7 +69,7 @@ app.post('/topic',function(req,res){
         if(err){
             res.status(500).send('Internal Server Error');
         }
-        res.send('Success !!');
+        res.redirect('/topic/'+title);      // 글 상세 조회 페이지로 간다.
     });
 })
 
